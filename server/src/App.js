@@ -1,6 +1,7 @@
 require("dotenv").config()
 const path = require("path")
 const express = require('express')
+const router = require("./routes/main_router")
 const app = express()
 
 // config
@@ -16,7 +17,4 @@ app.listen(PORT, () => {
     console.log(`Server Running. Listening on port ${PORT}`)
 })
 
-// routing
-app.get("/", (req, res) => {
-    res.render("index");
-})
+app.use('/', router)
