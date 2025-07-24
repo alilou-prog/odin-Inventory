@@ -1,21 +1,24 @@
+import {fetch_data} from "../data/data"
+
 export default function Category({ category, set_categories }) {
-    const update = (e) => {
+    const update = async (e) => {
         const id = parseInt(e.currentTarget.getAttribute('data-id'));
-        const updated_elem = {id: id, name: "update value"};
-        set_categories(prev => {
-            return prev.map(elem => elem.id === id ? updated_elem : elem)
+        await fetch(`/api/categories/${id}`, {
+            method: "PUT", 
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, name: "updated name" })
         })
+        set_categories(await fetch_data())
     }
 
-    const del = (e) => {
+    const del = async (e) => {
         const id = parseInt(e.currentTarget.getAttribute('data-id'));
-        set_categories(prev => {
-            return prev.filter(elem => elem.id !== id)
-        })
+        await fetch(`/api/categories/${id}`, { method: "DELETE" });
+        set_categories(await fetch_data())
     }
 
     const handle_click = (e) => {
-        switch(e.target.role) {
+        switch (e.target.role) {
             case "update":
                 update(e);
                 break;
