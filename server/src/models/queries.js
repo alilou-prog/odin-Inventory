@@ -15,8 +15,13 @@ const update_category = async (category) => {
     [category.name, category.id]);
 }
 
+const get_items = async (category_id) => {
+    return await pool.query(`SELECT * FROM items WHERE category_id = $1`, [category_id]);
+}
+
 module.exports = {
     get_all_categories,
     del_category,
-    update_category
+    update_category,
+    get_items,
 }

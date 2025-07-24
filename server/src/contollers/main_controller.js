@@ -16,7 +16,12 @@ module.exports.del_category = async (req, res, id) => {
 }
 
 module.exports.update_category = async (req, res) => {
-    console.log(req.body);
     await db.update_category(req.body);
+    res.end();
+}
+
+module.exports.get_items = async (req, res, category_id) => {
+    const {rows} = await db.get_items(category_id);
+    res.json(rows);
     res.end();
 }

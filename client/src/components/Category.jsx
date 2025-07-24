@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { fetch_data } from "../data/data"
+import { useNavigate } from "react-router-dom";
 
 export default function Category({ category, set_categories }) {
     const [updating, set_updating] = useState(false);
+    const navigate = useNavigate()
+
     const start_updating = () => {
         set_updating(true);
     }
@@ -36,11 +39,14 @@ export default function Category({ category, set_categories }) {
             case "sumbit":
                 update(e);
                 break;
+            case "display-items":
+                navigate(`/${category.id}/items`);
+                break;
             default:
                 throw Error(`Invalid value for e.target.role, expected (update | delete), got ${e.target.role}`)
         }
     }
-    
+
     return (
         <li data-id={category.id} onClick={handle_click}>
             {updating ? (
@@ -55,6 +61,7 @@ export default function Category({ category, set_categories }) {
             <div className="btns">
                 <button className="update" role="update">Update</button>
                 <button className="delete" role="delete">Delete</button>
+                <button className="diplay-items" role="display-items">Items</button>
             </div>
         </li>
     )
