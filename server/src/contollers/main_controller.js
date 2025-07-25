@@ -10,6 +10,11 @@ module.exports.get_all_categories = async (req, res) => {
     res.end()
 };
 
+module.exports.create_category = async (req, res) => {
+    console.log("body", req.body);
+    await db.create_category(req.body)
+}
+
 module.exports.del_category = async (req, res, id) => {
     await db.del_category(id);
     res.end();

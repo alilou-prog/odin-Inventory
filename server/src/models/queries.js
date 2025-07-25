@@ -4,6 +4,10 @@ const get_all_categories = async () => {
     return await pool.query("SELECT * FROM categories");
 }
 
+const create_category = async ({name}) => {
+    return await pool.query("INSERT INTO categories (name) VALUES ($1)", [name]);
+}
+
 const del_category = async (id) => {
     await pool.query("DELETE FROM categories WHERE id = $1", [id]);
 }
@@ -21,6 +25,7 @@ const get_items = async (category_id) => {
 
 module.exports = {
     get_all_categories,
+    create_category,
     del_category,
     update_category,
     get_items,

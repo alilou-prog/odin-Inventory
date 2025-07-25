@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Category from "./components/Category"
+import CreateCategory from "./components/CreateCategory";
 import './styles/styles.css'
 import {fetch_data} from './data/data'
 
@@ -19,6 +20,7 @@ function App() {
       <ul>
         {categories.map(category => <Category key={category.id} category={category} set_categories={set_categories} />)}
       </ul>
+      <CreateCategory />
     </>
   )
 }
