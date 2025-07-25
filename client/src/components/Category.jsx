@@ -1,31 +1,33 @@
 import { useState } from "react";
-import { fetch_data } from "../data/data"
 import { useNavigate } from "react-router-dom";
 
-export default function Category({ category, set_categories }) {
+export default function Category({ category, set_refresh_categories }) {
     const [updating, set_updating] = useState(false);
+    const [input_value, set_input_value] = useState("")
     const navigate = useNavigate()
 
     const start_updating = () => {
         set_updating(true);
     }
 
-    const update = async (e) => {
+    const submit_update = async (e) => {
         e.preventDefault();
         const id = parseInt(e.currentTarget.getAttribute('data-id'));
-        const name = e.target.value;
+        const name = input_value;
         await fetch(`/api/categories/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id, name })
         })
-        set_categories(await fetch_data())
+        set_updating(false);
+        // parent state
+        set_refresh_categories(true)
     }
 
     const del = async (e) => {
         const id = parseInt(e.currentTarget.getAttribute('data-id'));
         await fetch(`/api/categories/${id}`, { method: "DELETE" });
-        set_categories(await fetch_data())
+        set_refresh_categories(true)
     }
 
     const handle_click = (e) => {
@@ -36,14 +38,14 @@ export default function Category({ category, set_categories }) {
             case "delete":
                 del(e);
                 break;
-            case "sumbit":
-                update(e);
+            case "submit":
+                submit_update(e);
                 break;
             case "display-items":
                 navigate(`/${category.id}/items`);
                 break;
             default:
-                throw Error(`Invalid value for e.target.role, expected (update | delete), got ${e.target.role}`)
+                return;
         }
     }
 
@@ -52,7 +54,7 @@ export default function Category({ category, set_categories }) {
             {updating ? (
                 <form>
                     <label htmlFor="name"></label>
-                    <input type="text" name="name" placeholder={category.name} />
+                    <input type="text" name="name" placeholder={category.name} value={input_value} onChange={(e) => set_input_value(e.target.value)} />
                     <button className="submit" role="submit">Submit</button>
                 </form>
             ) :

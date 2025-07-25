@@ -23,10 +23,15 @@ const get_items = async (category_id) => {
     return await pool.query(`SELECT * FROM items WHERE category_id = $1`, [category_id]);
 }
 
+const create_item = async (category_id, item) => {
+    await pool.query("INSERT INTO items (name, content, category_id) VALUES ($1, $2, $3)", [item.name, item.content, category_id])
+}
+
 module.exports = {
     get_all_categories,
     create_category,
     del_category,
     update_category,
     get_items,
+    create_item,
 }
