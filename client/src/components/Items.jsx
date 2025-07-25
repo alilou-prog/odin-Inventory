@@ -1,14 +1,25 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import CreateItem from "./CreateItem";
+import Item from "./Item";
 
 export default function Items() {
     const { category_id } = useParams()
+    const [category, set_category] = useState({})
     const [items, set_items] = useState([]);
     const [refresh_items, set_refresh_items] = useState(false);
 
     useEffect(() => {
-        const fetch_data = async () => {
+        const fetch_category = async () => {
+            const res = await fetch(`/api/categories/${category_id}`)
+            if (!res.ok) {
+                console.error("Failed to fetch data");
+                return;
+            }
+            set_category(await res.json())
+        }
+
+        const fetch_items = async () => {
             const res = await fetch(`/api/categories/${category_id}/items`);
             if (!res.ok) {
                 console.error("Failed to fetch data");
@@ -17,30 +28,21 @@ export default function Items() {
             set_items(await res.json())
             set_refresh_items(false);
         }
-        fetch_data()
+
+        fetch_category()
+        fetch_items()
     }, [category_id, refresh_items])
 
     return (
         <>
-            <h1>Items</h1>
+            <h1>Category: {category.name}</h1>
             <ul>
-                {items.map(item => <Item item={item} />)}
+                {items.map(item => <Item category_id={category_id} item={item} set_refresh_items={set_refresh_items}/>)}
             </ul>
             <h2>Create Item</h2>
-            <CreateItem category_id={category_id} set_refresh_items={set_refresh_items}/>
-            
+            <CreateItem category_id={category_id} set_refresh_items={set_refresh_items} />
+
         </>
     )
 }
 
-function Item({ item }) {
-    return (
-        <li>
-            <p>
-                name: {item.name}
-                <br />
-                content: {item.content}
-            </p>
-        </li>
-    )
-}
