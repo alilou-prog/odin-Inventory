@@ -1,12 +1,12 @@
 import { useState } from "react"
 import { useRef } from "react";
 
-export default function CreateItem({category_id, set_refresh_items}) {
-    const [input_values, set_input_values] = useState({name: "", content: ""});
+export default function CreateItem({ category_id, set_refresh_items }) {
+    const [input_values, set_input_values] = useState({ name: "", content: "" });
     const [dialog_is_opened, set_dialog_is_opened] = useState(false);
     const dialog_ref = useRef(null);
     const handle_input_change = (e) => {
-        set_input_values(prev => {return {...prev, [e.target.name]: e.target.value} } );
+        set_input_values(prev => { return { ...prev, [e.target.name]: e.target.value } });
     }
     const handle_submit = (e) => {
         e.preventDefault();
@@ -23,7 +23,8 @@ export default function CreateItem({category_id, set_refresh_items}) {
 
     return (
         <div>
-            <button onClick={() => { set_dialog_is_opened(true); dialog_ref.current.showModal() }}>Create new category</button>
+            <h2>Create Item</h2>
+            <button onClick={() => { set_dialog_is_opened(true); dialog_ref.current.showModal() }}>Create new item</button>
             <dialog open={dialog_is_opened} ref={dialog_ref}>
                 <h2>Add Category</h2>
                 <form onSubmit={handle_submit}>
@@ -31,7 +32,7 @@ export default function CreateItem({category_id, set_refresh_items}) {
                     <input type="text" name="name" value={input_values.name} onChange={handle_input_change} />
 
                     <label htmlFor="content">Content</label>
-                    <input type="text" name="content" value={input_values.content} onChange={handle_input_change}/>
+                    <input type="text" name="content" value={input_values.content} onChange={handle_input_change} />
 
                     <button type="submit">Submit</button>
                 </form>

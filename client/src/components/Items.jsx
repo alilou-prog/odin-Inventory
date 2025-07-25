@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import CreateItem from "./CreateItem";
 import Item from "./Item";
 
@@ -39,8 +39,8 @@ export default function Items() {
             <ul>
                 {items.map(item => <Item category_id={category_id} item={item} set_refresh_items={set_refresh_items}/>)}
             </ul>
-            <h2>Create Item</h2>
             <CreateItem category_id={category_id} set_refresh_items={set_refresh_items} />
+            <Link to={'/'}>Home</Link>
 
         </>
     )
