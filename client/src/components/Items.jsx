@@ -37,7 +37,12 @@ export default function Items() {
         <>
             <h1>Category: {category.name}</h1>
             <ul>
-                {items.map(item => <Item category_id={category_id} item={item} set_refresh_items={set_refresh_items}/>)}
+                {
+                items ?
+                    (items.map(item => <Item category_id={category_id} item={item} set_refresh_items={set_refresh_items} />))
+                    :
+                    (<spane>Loading...</spane>)
+                }
             </ul>
             <CreateItem category_id={category_id} set_refresh_items={set_refresh_items} />
             <Link to={'/'}>Home</Link>

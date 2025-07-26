@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import Category from "./components/Category"
 import CreateCategory from "./components/CreateCategory";
 import './styles/styles.css'
-import {fetch_data} from './data/data'
+import { fetch_data } from './data/data'
 
 function App() {
   const [categories, set_categories] = useState([])
   const [refresh_categories, set_refresh_categories] = useState(false);
   useEffect(() => {
     const fn = async () => {
-    set_categories(await fetch_data())
-    set_refresh_categories(false)
+      set_categories(await fetch_data())
+      set_refresh_categories(false)
     }
     fn()
   },
@@ -20,9 +20,14 @@ function App() {
     <>
       <h1>Home page</h1>
       <ul>
-        {categories.map(category => <Category key={category.id} category={category} set_refresh_categories={set_refresh_categories} />)}
+        {
+          categories ?
+            (categories.map(category => <Category key={category.id} category={category} set_refresh_categories={set_refresh_categories} />))
+            :
+            (<span>Loading...</span>)
+        }
       </ul>
-      <CreateCategory set_refresh_categories={set_refresh_categories}/>
+      <CreateCategory set_refresh_categories={set_refresh_categories} />
     </>
   )
 }
